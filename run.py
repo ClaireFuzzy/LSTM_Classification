@@ -25,7 +25,7 @@ if __name__ == '__main__':
         embedding = 'random'
     model_name = args.model  #TextCNN, TextRNN,
 
-    #from utils import build_dataset, build_iterator, get_time_dif
+    from utils import build_dataset, build_iterator, get_time_dif
     x = import_module('models.' + model_name)
     config = x.Config(dataset, embedding)
     np.random.seed(1)
@@ -33,4 +33,16 @@ if __name__ == '__main__':
     torch.cuda.manual_seed_all(1)
     torch.backends.cudnn.deterministic = True  # 保证每次结果一样
 
-    
+    start_time = time.time()
+    print("Loading Data.")
+    vocab, train_data, dev_data, test_data = build_dataset(config, args.word)
+    train_iter = build_iterator(train_data, config)
+    dev_iter = build_iterator(dev_data, config)
+    test_iter = build_iterator(test_data, config)
+    time_dif = get_time_dif(start_time)
+    print("Time Usage:", time_dif)
+
+    config.n_vocab = len(vocab)
+    model = x.Model
+
+
