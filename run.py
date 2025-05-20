@@ -43,6 +43,11 @@ if __name__ == '__main__':
     print("Time Usage:", time_dif)
 
     config.n_vocab = len(vocab)
-    model = x.Model
+    model = x.Model(config).to(config.device)
+    writer = SummaryWriter(log_dir = config.log_path + '/' + time.strftime('%m-%d_%H.%M', time.localtime()))
+    if model_name != 'Transformer':
+        init_network(model)
+    print(model.parameters)
+    train(config, model, train_iter, dev_iter, test_iter, writer)
 
 

@@ -46,8 +46,8 @@ class Model(nn.Module):
         print(x.shape)
         out = self.embedding(x)
         print(out.shape)
-        ut, _ = self.lstm(out)
-        out = self.fc(out[:, -1, :])  # 句子最后时刻的 hidden state
+        out, _ = self.lstm(out)
+        out = self.fc(out[:, -1, :])  # 句子最后时刻的 hidden state, batch*maxlen*256,取每个batch最后一个
         return out
 
 
